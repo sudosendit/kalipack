@@ -101,7 +101,7 @@ print("target type: ", type(target))
 
 if target == None:
     target = check_target()
-    
+    auto_map(target)
 
 else:
     auto_map(target)
