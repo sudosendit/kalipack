@@ -19,6 +19,7 @@ def check_target():
         try:
             ipaddress.ip_address(target)
             print(f"CONSOLE: Target set to -> {target}")
+            return target
 
 
         except ValueError: 
@@ -29,11 +30,10 @@ def check_target():
     except Exception as e:
     
         print("ERROR: Could not find a file named 'target'.")
-
-       
+    
 
         while True:
-            create_target_prompt = input ("CONSOLE: Would you like to create a target file?: ")
+            create_target_prompt = input ("CONSOLE: Would you like to create a target file?: ").strip().lower()
 
             if create_target_prompt in ["yes", "y"]:
                 new_target = input("Please enter an IP address: ").strip()
@@ -41,7 +41,7 @@ def check_target():
                 try:
                     ipaddress.ip_address(new_target)
                     os.system(f"echo '{new_target}' > target")
-                    return None
+                    return new_target
 
                 except ValueError: 
                     print("ERROR: No valid IP Address in 'target' file, requried format is 0.0.0.0")
@@ -59,7 +59,7 @@ def check_target():
             
 
 def auto_map(target):
-    target = str(target)
+    #targetz = str(target)
     folder = 'scans'
     existing_dir = os.path.isdir(folder)
     if existing_dir == True: 
@@ -67,6 +67,7 @@ def auto_map(target):
 
     elif existing_dir == False: 
         try: 
+            print("CONSOLE: Created new scans folder...")
             os.mkdir(folder)
 
         except Exception as e:
@@ -75,33 +76,56 @@ def auto_map(target):
 
 
     ### Executes nmap scans. 
-    os.system(f"sudo nmap -iL {target} -oN scans/std.map")
-    print("CONSOLE: Standard mapping SUCCESS, results available in 'scans/std.map'")
-
-    os.system(f"sudo nmap -sS -sC -sV -Pn -p- -iL {target} -oN scans/adv.map")
-    print("CONSOLE: Advance map SUCCESS, results available in 'scans/adv.map'")
-    ###
-
+    # STD Map
     while True: 
-        udp_prompt = input("CONSOLE: Would you like to complete a UDP NMAP?: ")
-        if udp_prompt in ["yes", "y"]:
-            os.system(f"sudo nmap -sU -iL {target} -oN scans/udp.map")
+        std_prompt = input("CONSOLE: Would you like to complete a Standard NMAP?: ").strip()
+        if std_prompt.lower() in ["yes", "y"]:
+            print("")
+            os.system(f"sudo nmap {target} -oN scans/std.map")
+            print("CONSOLE: UDP mapping SUCCESS, results available in 'scans/std.map'.\n")
+
+        elif udp_prompt.lower() in ["no", "n"]:
+            break
+
+        else: 
+            print("CONSOLE: Please enter 'yes' or 'no'.")
+
+    # ADV Map
+    while True:
+        adv_prompt = input("CONSOLE: Would you like to complete a Advance NMAP?: ").strip()
+        if adv_prompt.lower() in ["yes", "y"]:
+            print("")
+            os.system(f"sudo nmap -sS -sC -sV -Pn -p- {target} -oN scans/adv.map")
+            print("CONSOLE: Advance map SUCCESS, results available in 'scans/adv.map'.\n")
+
+        elif udp_prompt.lower() in ["no", "n"]:
+            break
+
+        else: 
+            print("CONSOLE: Please enter 'yes' or 'no'.")
+
+    # UDP Map
+    while True: 
+        udp_prompt = input("CONSOLE: Would you like to complete a UDP NMAP?: ").strip()
+        if udp_prompt.lower() in ["yes", "y"]:
+            os.system(f"sudo nmap -sU {target} -oN scans/udp.map")
             print("CONSOLE: UDP mapping SUCCESS, results available in 'scans/adv.map'")
 
-        elif udp_prompt in ["no", "n"]:
+        elif udp_prompt.lower() in ["no", "n"]:
             break
 
         else: 
             print("CONSOLE: Please enter 'yes' or 'no'.")
 
 
+### Program
+
 target = check_target()
-print("target value: ", target)
-print("target type: ", type(target))
 
 if target == None:
     target = check_target()
     auto_map(target)
+    
 
 else:
     auto_map(target)
