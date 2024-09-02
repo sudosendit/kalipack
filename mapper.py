@@ -36,7 +36,7 @@ def check_target():
             create_target_prompt = input ("CONSOLE: Would you like to create a target file?: ").strip().lower()
 
             if create_target_prompt in ["yes", "y"]:
-                new_target = input("Please enter an IP address: ").strip()
+                new_target = input("CONSOLE: Please enter an IP address: ").strip()
 
                 try:
                     ipaddress.ip_address(new_target)
