@@ -83,8 +83,9 @@ def auto_map(target):
             print("")
             os.system(f"sudo nmap {target} -oN scans/std.map")
             print("CONSOLE: UDP mapping SUCCESS, results available in 'scans/std.map'.\n")
+            break
 
-        elif udp_prompt.lower() in ["no", "n"]:
+        elif std_prompt.lower() in ["no", "n"]:
             break
 
         else: 
@@ -97,8 +98,9 @@ def auto_map(target):
             print("")
             os.system(f"sudo nmap -sS -sC -sV -Pn -p- {target} -oN scans/adv.map")
             print("CONSOLE: Advance map SUCCESS, results available in 'scans/adv.map'.\n")
+            break
 
-        elif udp_prompt.lower() in ["no", "n"]:
+        elif adv_prompt.lower() in ["no", "n"]:
             break
 
         else: 
@@ -109,8 +111,9 @@ def auto_map(target):
         udp_prompt = input("CONSOLE: Would you like to complete a UDP NMAP?: ").strip()
         if udp_prompt.lower() in ["yes", "y"]:
             os.system(f"sudo nmap -sU {target} -oN scans/udp.map")
-            print("CONSOLE: UDP mapping SUCCESS, results available in 'scans/adv.map'")
-
+            print("CONSOLE: UDP mapping SUCCESS, results available in 'scans/adv.map'.\n")
+            break
+          
         elif udp_prompt.lower() in ["no", "n"]:
             break
 
