@@ -2,14 +2,14 @@ import os
 import ipaddress
 
 print("""
-                         )       )   *           (     
-   (            *   ) ( /(    ( /( (  `    (     )\ )  
-   )\       ( ` )  /( )\())   )\()))\))(   )\   (()/(  
-((((_)(     )\ ( )(_)|(_)\   ((_)\((_)()((((_)(  /(_)) 
- )\ _ )\ _ ((_|_(_())  ((_)   _((_|_()((_)\ _ )\(_))   
- (_)_\(_) | | |_   _| / _ \  | \| |  \/  (_)_\(_) _ \  
-  / _ \ | |_| | | |  | (_) | | .` | |\/| |/ _ \ |  _/  
- /_/ \_\ \___/  |_|   \___/  |_|\_|_|  |_/_/ \_\|_| \n""")
+ ______  ________  _________  ________  __      ______  _______    
+/_____/\/_______/\/________/\/_______/\/_/\    /_____/\/______/\   
+\:::__\/\::: _  \ \__.::.__\/\::: _  \ \:\ \   \:::_ \ \::::__\/__ 
+ \:\ \  _\::(_)  \ \ \::\ \   \::(_)  \ \:\ \   \:\ \ \ \:\ /____/
+  \:\ \/_/\:: __  \ \ \::\ \   \:: __  \ \:\ \___\:\ \ \ \:\\_  _\/
+   \:\_\ \ \:.\ \  \ \ \::\ \   \:.\ \  \ \:\/___/\:\_\ \ \:\_\ \ 
+    \_____\/\__\/\__\/  \__\/    \__\/\__\/\_____\/\_____\/\_____\/
+    \n""")
 
 
 def check_target(): 
@@ -60,14 +60,14 @@ def check_target():
 
 def auto_map(target):
     #targetz = str(target)
-    folder = 'scans'
+    folder = 'maps'
     existing_dir = os.path.isdir(folder)
     if existing_dir == True: 
         pass
 
     elif existing_dir == False: 
         try: 
-            print("CONSOLE: Created new scans folder...")
+            print(f"CONSOLE: Created new {folder} folder...")
             os.mkdir(folder)
 
         except Exception as e:
@@ -120,6 +120,15 @@ def auto_map(target):
         else: 
             print("CONSOLE: Please enter 'yes' or 'no'.")
 
+def autodirs():
+    autodir_prompt = input('CONSOLE: Would you like to auto-create working directories?: ')
+    if autodir_prompt.lower() in ["yes", "y"]:
+        os.mkdir('data')
+        os.mkdir('pkg')
+        os.mkdir('maps')
+        print('CONSOLE: Created data, pkg and maps directories.')
+    else:
+        print('CONSOLE: Skipping directory creation.')
 
 ### Program
 
@@ -131,6 +140,7 @@ if target == None:
     
 
 else:
+    autodirs()
     auto_map(target)
     
 print("CONSOLE: Finished!")
