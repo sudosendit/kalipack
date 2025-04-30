@@ -5,3 +5,9 @@ find . -type f -exec cat {} + | grep data
 * -type f: Restricts the search to regular files (so directories and other file types are excluded).
 * -exec cat {} +: This executes the cat command on all the files found. The {} is replaced by each file, and the + ensures that cat is executed with as many files as possible in a single call (efficient).
 * | grep thedata: Pipes the combined content of all the files into grep to search for the string thedata.
+
+
+# Easy git commands
+git clone https://<your-username>:<your-token>@github.com/<your-username>/<your-repo>.git
+
+git config --global user.name "<bob j>"
