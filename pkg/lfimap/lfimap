@@ -1,0 +1,65 @@
+#!/usr/bin/python3
+# Very Simple Script for LFI Mapping. No pip.
+# Made by sudosendit for Kalipack
+# DEV IN PROGRESS
+
+import argparse, os
+
+from src import scan
+from assets import logo
+
+version = '1.0.090625-alpha'
+
+
+if __name__ == "__main__":
+
+    print(logo.main)
+
+    parser = argparse.ArgumentParser(prog="lfimap",
+                                    usage="./%(prog)s --help", 
+                                    description=f'Run: export PATH=$PATH:{os.path.dirname(__file__)}    for seemless use.' )
+    
+    parser.add_argument('-u',
+                        '--url',
+                        default=None,
+                        help='The Target URL (Required)')
+    
+    parser.add_argument('-s',
+                        '--ssl',
+                        required=False,
+                        action='store_true',
+                        help='Enable SSL for scan')
+    
+    parser.add_argument('-win',
+                        '--windows',
+                        required=False,
+                        action='store_true',
+                        help='Target Windows Host File instead of linux')
+    
+    parser.add_argument('-v',
+                        '--verbose',
+                        required=False,
+                        action='store_true',
+                        help='Enable Verbose Logging')
+    
+    parser.add_argument('-a',
+                        '--absolute-path',
+                        required=False,
+                        action='store_true',
+                        help='Enable Absolute Path scan')
+    
+    parser.add_argument('-t',
+                        '--traversal',
+                        required=False,
+                        default=5,
+                        type=int,
+                        help='Change Count of Traversal. Default = 5')
+
+    args = parser.parse_args()
+
+    if (args.url is not None):
+        print(f'lfimap: LFI Mapping Version {version} made by Sudosendit')
+        scan.LFIScan(args, args.url)
+
+    else:
+        parser.print_usage()
