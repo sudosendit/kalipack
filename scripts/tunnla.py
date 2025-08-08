@@ -20,7 +20,7 @@ def main():
         print('Only numbers are allow.')
         return
 
-    start_tunnel(FROM_PORT, TO_PORT)
+    start_tunnel()
 
 
 def forward(source, destination):
