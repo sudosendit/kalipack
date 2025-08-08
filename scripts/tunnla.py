@@ -1,12 +1,26 @@
+#!/usr/bin/python3
 import socket
 import threading
+import sys
+sys.argv
 
 # CONFIGURATION
-TO_HOST = '127.0.0.1'      
-TO_PORT = 19999           # Duplicating
-
+TO_HOST = '127.0.0.1' 
 LOCAL_HOST = '0.0.0.0'     
-FROM_PORT = 4321         # Reporting from
+
+def main():
+    if len(sys.argv) != 3:
+        print("Usage: python3 tunnla.py <target_port> <new_port_to_open>")
+        sys.exit(1)
+    try:
+        TO_PORT = int(sys.argv[1])
+        FROM_PORT = int(sys.argv[2])
+    except ValueError:
+        print('Only numbers are allow.')
+        return
+
+    start_tunnel(FROM_PORT, TO_PORT)
+
 
 def forward(source, destination):
     try:
@@ -24,14 +38,14 @@ def handle_client(client_socket):
         remote_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         remote_socket.connect((TO_HOST, TO_PORT))
 
-        # fwd in both directions
+        # Start forwarding in both directions
         threading.Thread(target=forward, args=(client_socket, remote_socket)).start()
         threading.Thread(target=forward, args=(remote_socket, client_socket)).start()
     except Exception as e:
         print(f"[!] Error: {e}")
         client_socket.close()
 
-def start_tunnel():
+def start_tunnel(FROM_PORT, TO_PORT):
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server.bind((LOCAL_HOST, FROM_PORT))
     server.listen(5)
@@ -43,4 +57,5 @@ def start_tunnel():
         threading.Thread(target=handle_client, args=(client_socket,)).start()
 
 if __name__ == '__main__':
-    start_tunnel()
+    main()
+    print('Exiting.')
