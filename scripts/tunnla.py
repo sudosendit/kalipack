@@ -13,6 +13,7 @@ def main():
         print("Usage: python3 tunnla.py <target_port> <new_port_to_open>")
         sys.exit(1)
     try:
+        global TO_PORT; global FROM_PORT
         TO_PORT = int(sys.argv[1])
         FROM_PORT = int(sys.argv[2])
     except ValueError:
@@ -45,7 +46,7 @@ def handle_client(client_socket):
         print(f"[!] Error: {e}")
         client_socket.close()
 
-def start_tunnel(FROM_PORT, TO_PORT):
+def start_tunnel():
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server.bind((LOCAL_HOST, FROM_PORT))
     server.listen(5)
